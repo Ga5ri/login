@@ -57,6 +57,7 @@
 	if(cnt%rowPerPage != 0){
 		lastPage+=1;
 	}
+	
 	String listSql = null;
 	PreparedStatement listStmt = null;
 	if(search == null || search.equals("")){
@@ -89,6 +90,9 @@
 		list.add(e);
 	}
 	
+	listRs.close();
+	listStmt.close();
+	conn.close();	
 	// 3) View
 %>
 <!DOCTYPE html>
@@ -121,29 +125,47 @@
 		<h1 class="text-center p-3">사원목록</h1>
 		<!-- 검색창 -->
 		<form action="<%=request.getContextPath()%>/empList.jsp" method="post" class="p-4">
-			<label for="search">성or이름 검색 : </label>
+			<label for="search">이름 검색 : </label>
 			<input type="text" name="search" id="search" value="<%=search%>">
 			<button type="submit">검색</button>
 		</form>
 		<table class="table">
 			<tr>
-				<th>번호</th>
+				<th>사번</th>
 				<th>
 					이름(firstName)
 					<%
-						if(sort.equals("ASC")) {
+						if(search == null || search.equals("")){ // 검색값 null || 공백 -> ASC,DESC
+					%>	
+					
+						<%
+							if(sort.equals("ASC")) {
+						%>
+								<a href="<%=request.getContextPath()%>/empList.jsp?currentPage=<%=currentPage%>&sort=DESC">[내림차순]</a>				
+						<%		
+							} else {
+						%>
+								<a href="<%=request.getContextPath()%>/empList.jsp?currentPage=<%=currentPage%>&sort=ASC">[오름차순]</a>								
+						<%		
+							}
+						%>
+					<%
+						} else { // 검색값 있을 경우 ASC,DESC
 					%>
-							<a href="<%=request.getContextPath()%>/empList.jsp?currentPage=<%=currentPage%>&sort=DESC">[내림차순]</a>				
-					<%		
-						} else {
-					%>
-							<a href="<%=request.getContextPath()%>/empList.jsp?currentPage=<%=currentPage%>&sort=ASC">[오름차순]</a>								
-					<%		
+						<%
+							if(sort.equals("ASC")) {
+						%>
+								<a href="<%=request.getContextPath()%>/empList.jsp?currentPage=<%=currentPage%>&sort=DESC">[내림차순]</a>				
+						<%		
+							} else {
+						%>
+								<a href="<%=request.getContextPath()%>/empList.jsp?currentPage=<%=currentPage%>&sort=ASC">[오름차순]</a>								
+						<%		
+							}
+						%>
+					<%
 						}
 					%>
-				</th>
-				<th>
-					성(lastName)
 				</th>
 			</tr>
 			<%
@@ -151,8 +173,7 @@
 			%>
 					<tr>
 						<td><%=e.getEmpNo()%></td>
-						<td><%=e.getFirstName()%></td>
-						<td><%=e.getLastName()%></td>
+						<td><%=e.getFirstName() + " " + e.getLastName()%></td>
 					</tr>
 			<%
 				}
@@ -161,7 +182,7 @@
 		<!-- 페이징 코드 -->
 		<div class="btn-group text-center p-3">
 			<%
-				if(search == null){ // null -> 기존 페이징
+				if(search == null || search.equals("")){ // null || 공백일경우 -> 기존 페이징
 			%>
 					<a href="<%=request.getContextPath()%>/empList.jsp?currentPage=1&sort=<%=sort%>" class="btn btn-outline-secondary b2">처음</a>
 					<%

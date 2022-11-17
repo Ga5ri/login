@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	// session 유효성 검증 코드 후 필요하다면 redirect!
+	// session 유효성 검증 코드
+	if(session.getAttribute("loginEmp")!=null){
+		response.sendRedirect(request.getContextPath()+"/empList.jsp");
+	}
 %>
 <!DOCTYPE html>
 <html>

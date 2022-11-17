@@ -5,6 +5,11 @@
 	// 1 controller
 	// session 유효성 검증 코드 후 필요하다면 redirect	
 	// request 유효성 검증
+	if(request.getParameter("empNo")==null||request.getParameter("empNo").equals("")||request.getParameter("firstName")==null||request.getParameter("firstName").equals("")
+		|| request.getParameter("lastName")==null|| request.getParameter("lastName").equals("")){
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
+		return;
+	}
 	int empNo = Integer.parseInt(request.getParameter("empNo"));
 	String firstName = request.getParameter("firstName");
 	String lastName = request.getParameter("lastName");
