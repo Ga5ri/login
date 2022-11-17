@@ -5,13 +5,17 @@
 <%
 	// 1 요청분석
 	request.setCharacterEncoding("UTF-8");
+	String msg = request.getParameter("msg");
+
 	if(session.getAttribute("loginMemberId") == null){
 		//로그인 되지 않은 상태
 		response.sendRedirect(request.getContextPath()+"/memberIndex.jsp");
 		return;
 	}
+	
 	String memberId = request.getParameter("member_id");
 	String memberName = request.getParameter("member_name");
+	
 	// 2 요청처리
 	String driver	= "org.mariadb.jdbc.Driver";
 	String dbUrl	= "jdbc:mariadb://localhost:3306/gdj58";
@@ -42,6 +46,13 @@
 </head>
 <body>
 	<h1>내정보</h1>
+	<%
+		if(msg != null){
+	%>
+			<span><%=msg%></span>
+	<%
+		}
+	%>
 	<!-- pw 제외 내정보 보여줘야함 -->
 			<table>
 			<tr>

@@ -49,7 +49,7 @@
 					</tr>
 					<tr>
 						<td class="text-center">닉네임</td>
-						<td><input type="text" name="memberName" placeholder="성함을 입력하세요"></td>
+						<td><input type="text" name="memberName" placeholder="닉네임을 입력하세요"></td>
 					</tr>
 				</table>
 				<div class="btn p-3 b3">

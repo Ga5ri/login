@@ -4,7 +4,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	// 1
-	String memberId = request.getParameter("memberId");
+	String loginMemberId = (String)(session.getAttribute("loginMemberId"));
 	String memberPw = request.getParameter("memberPw");
 	
 	
@@ -18,34 +18,21 @@
 	Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPw); // db 연결
 	System.out.println(conn+"<--connection");
 	
-	String sql = "SELECT * FROM member WHERE member_pw = PASSWORD(?)";
+	String sql = "DELETE FROM member WHERE member_id = ? AND member_pw = PASSWORD(?)";
 	PreparedStatement stmt = conn.prepareStatement(sql);
-	stmt.setString(1, memberPw);
-	ResultSet rs = stmt.executeQuery();
+	stmt.setString(1, loginMemberId);
+	stmt.setString(2, memberPw);
+	int row = stmt.executeUpdate();
 	
 	
-	if(rs.next()){
-		String dSql = "DELETE FROM member WHERE member_id = ?";
-		PreparedStatement dStmt = conn.prepareStatement(dSql);	
-		dStmt.setString(1, memberId);
-		dStmt.executeUpdate();
+	if(row == 1){
+		String msg = URLEncoder.encode("회원탈퇴가 완료되었습니다.","utf-8");
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp?msg="+msg);
 		session.invalidate();
-		
-		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		System.out.println("탈퇴성공");
 	} else{
-		String msg2 = URLEncoder.encode("비밀번호를 확인하세요.","utf-8");
-		response.sendRedirect(request.getContextPath()+"/deleteMemberForm.jsp");
+		String msg = URLEncoder.encode("비밀번호가 일치하지 않습니다.","utf-8");
+		response.sendRedirect(request.getContextPath()+"/deleteMemberForm.jsp?msg="+msg);
 		System.out.println("탈퇴실패");
 	}		
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
-</html>

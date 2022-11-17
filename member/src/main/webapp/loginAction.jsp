@@ -16,6 +16,7 @@
 	String memberId = request.getParameter("memberId");
 	String memberPw = request.getParameter("memberPw");
 	*/
+	
 	Member member	= new Member();
 	member.memberId	= request.getParameter("memberId");
 	member.memberPw	= request.getParameter("memberPw");
@@ -29,12 +30,13 @@
 	
 	Class.forName(driver); // 외부 드라이브 로딩
 	Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPw); // db 연결
+	System.out.println(conn+"<-connection");
 	/*
 		SELECT member_id memberId
 		FROM MEMBER
 		WHERE member_id=? AND member_pw=PASSWORD(?);
 	*/
-	String sql = "SELECT member_id memberId FROM MEMBER WHERE member_id=? AND member_pw=PASSWORD(?)";
+	String sql = "SELECT member_id FROM member WHERE member_id=? AND member_pw=PASSWORD(?)";
 	PreparedStatement stmt = conn.prepareStatement(sql);
 	stmt.setString(1, member.memberId);
 	stmt.setString(2, member.memberPw);
@@ -47,7 +49,7 @@
 		System.out.println("success");
 		targetPage = "/memberIndex.jsp";
 		// 로그인 성공했다는 값을 저장 -> session 
-		session.setAttribute("loginMemberId", rs.getString("memberId")); 
+		session.setAttribute("loginMemberId", rs.getString("member_id")); 
 		// Object loginMemberId = rs.getString("memberId"); // 다형성
 		// String loginMemberId = (String)(session.getAttribute("loginMemberId"));		
 				

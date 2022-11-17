@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	// 1
+	String msg = request.getParameter("msg");
 	if(session.getAttribute("loginMemberId") != null){
 		//로그인 되지 않은 상태
-		response.sendRedirect(request.getContextPath()+"/memberIndex.jsp");
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		return;
 	}
 %>
@@ -30,6 +31,13 @@
 	<body>
 		<div class="container rounded b1">
 			<h1 class="text-center p-2">로그인</h1>
+			<%
+				if(msg != null){	
+			%>
+					<span><%=msg%></span>
+			<%		
+				}
+			%>
 			<form action="<%=request.getContextPath()%>/loginAction.jsp" method="post">
 				<table class="table table-borderless p-3">
 					<tr>
