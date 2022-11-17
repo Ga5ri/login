@@ -133,7 +133,7 @@
 			<tr>
 				<th>사번</th>
 				<th>
-					이름(firstName)
+					이름(LASTNAME-FIRSTNAME)
 					<%
 						if(search == null || search.equals("")){ // 검색값 null || 공백 -> ASC,DESC
 					%>	
@@ -173,7 +173,7 @@
 			%>
 					<tr>
 						<td><%=e.getEmpNo()%></td>
-						<td><%=e.getFirstName() + " " + e.getLastName()%></td>
+						<td><%=e.getLastName() + " " + e.getFirstName()%></td>
 					</tr>
 			<%
 				}
